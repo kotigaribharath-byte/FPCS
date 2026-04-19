@@ -1,12 +1,13 @@
-from flask import Flask
 import os
+from dotenv import load_dotenv
 
-app = Flask(__name__)
+# Load .env FIRST before anything else reads env vars
+load_dotenv()
 
-@app.route("/")
-def home():
-    return "FPCS Backend is Running 🚀"
+from app import create_app
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+config_name = os.environ.get('FLASK_ENV', 'development')
+app = create_app(config_name)
+
+if __name__ == '__main__':
+    app.run(debug=app.config['DEBUG'], host='0.0.0.0', port=5000)
